@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# coding: UTF-8
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import os
+import xlrd
+import xlwt
+from sklearn import datasets, linear_model
+
+data=xlrd.open_workbook(r'C:\Users\sjzx\Desktop\北京大气状况数据.xlsx')
+table=data.sheets()[0]
+
+PM = []
+TEMP = []
+for pm ,Temp in zip(table.col_values(7),table.col_values(5)):
+    print(pm)
+
+'''    try:
+        if pm.strip()!='NA':
+            PM.append(pm)
+            TEMP.append(Temp)
+    except:
+        pass
+    else:
+        pass
+print(PM)
+print()
+print(TEMP)'''

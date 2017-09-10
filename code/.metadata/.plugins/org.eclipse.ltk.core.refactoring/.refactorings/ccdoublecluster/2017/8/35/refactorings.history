@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;ccdoublecluster/src/ccalgorithmn&apos; to &apos;ccalgorithmn.py&apos;" description="Rename resource &apos;ccalgorithmn&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/ccalgorithmn" name="ccalgorithmn.py" stamp="1504081172007" updateReferences="true"/>
+</session>

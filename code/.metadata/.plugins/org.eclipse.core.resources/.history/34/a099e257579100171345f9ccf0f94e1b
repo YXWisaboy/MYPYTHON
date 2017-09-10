@@ -1,0 +1,12 @@
+#coding=utf-8
+import numpy as np
+import xlrd
+import xlwt
+import re
+m=re.compile(r'(\D*)(\d*)')
+data=xlrd.open_workbook(r'C:\Users\sjzx\Desktop\多维聚类论文\就是这个数据！！！！.xlsx')
+table=data.sheets()[0]
+rowc=table.nrows
+col=table.ncols
+li=[]
+print(row)

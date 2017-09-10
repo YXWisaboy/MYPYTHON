@@ -1,0 +1,29 @@
+-- VERSION_4
+-- START DISKCACHE_2
+D:\YXW.FILE\code\.metadata\.plugins\org.eclipse.core.resources\.projects\dataclearn\com.python.pydev.analysis\v2_indexcache
+clearnToMatix1|1504581305303814000|D:\YXW.FILE\code\dataclearn\src\clearnToMatix1.py
+madedic|1504589342882377000|D:\YXW.FILE\code\dataclearn\src\madedic.py
+-- END DISKCACHE
+-- START DICTIONARY
+2
+1=clearnToMatix1
+2=madedic
+-- END DICTIONARY
+-- START TREE 1
+12
+arr|1|arr!11@
+col|2|col!11@col!19@
+dat|2|data!19@data!11@
+dic|2|dic1!19@dic2!19@
+f|1|f!11@
+li|1|li!11@
+m|1|m!11@
+ma|1|ma!11@
+row|2|rowc!19@rowc!11@
+she|1|sheet1!11@
+tab|2|table!11@table!19@
+val|1|value!11@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

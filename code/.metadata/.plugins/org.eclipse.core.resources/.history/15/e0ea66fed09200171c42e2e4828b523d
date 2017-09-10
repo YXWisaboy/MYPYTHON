@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+# coding: UTF-8
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import os
+import xlrd
+import xlwt
+from sklearn import datasets, linear_model
+#r'C:\Users\sjzx\Desktop\工作簿1.xlsx'
+def get_data(file_name):
+    data=xlrd.open_workbook(file_name)
+    table=data.sheets()[0]
+    X=[]
+    PM = []
+    count=0
+    for i in zip(table.col_values(7),table.col_values(10),table.col_values(5)):
+        Temp,lws,pm=i[0],i[1],i[2]
+        try:
+            if count==0:
+                count=1
+                continue
+            if pm=='NA':
+                continue
+            X.append([float(Temp),float(lws)])
+            PM.append(float(pm))
+        except:
+            pass
+        else:
+            pass
+    return X,PM
+
+def linear_model_main(X_parameters,Y_parameters,predict_value):
+     regr = linear_model.LinearRegression()
+     regr.fit(X_parameters, Y_parameters)
+     predict_outcome = regr.predict(predict_value)
+     predictions = {}
+     predictions['intercept'] = regr.intercept_
+     predictions['coefficient'] = regr.coef_
+     predictions['predicted_value'] = predict_outcome
+     return predictions
+ 
+def show_linear_line(X_parameters,Y_parameters):
+ # Create linear regression object
+     regr = linear_model.LinearRegression()
+     regr.fit(X_parameters, Y_parameters)
+     plt.scatter(X_parameters,Y_parameters,color='blue')
+     plt.plot(X_parameters,regr.predict(X_parameters),color='red',linewidth=4)
+     a=(np.max(X_parameters)-np.min(X_parameters))/4
+     min=np.min(X_parameters)
+     plt.xticks(([min+a,min+2*a,min+3*a,min+4*a]))
+     a=(np.max(Y_parameters)-np.min(Y_parameters))/4
+     min=np.min(Y_parameters)
+     plt.yticks(([min+a,min+2*a,min+3*a,min+4*a]))
+     plt.show()
+     
+X,Y = get_data(r'C:\Users\sjzx\Desktop\工作簿1.xlsx')
+predictvalue = [[1,2]]
+result = linear_model_main(X,Y,predictvalue)
+print("Intercept value ", result['intercept'])
+print("coefficient", result['coefficient'])
+print("Predicted value: ",result['predicted_value'])
+show_linear_line(X[:][1],Y)

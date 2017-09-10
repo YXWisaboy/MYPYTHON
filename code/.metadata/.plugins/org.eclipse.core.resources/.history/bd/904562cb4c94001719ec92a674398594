@@ -1,0 +1,31 @@
+from scipy import io as spio
+import numpy as np
+from sklearn import svm
+from sklearn.linear_model import LogisticRegression
+import os
+import xlrd
+import xlwt
+def get_data(file_name):
+    data=xlrd.open_workbook(file_name)
+    table=data.sheets()[0]
+    X=[]
+    PM = []
+    count=0
+    for i in zip(table.col_values(7),table.col_values(10),table.col_values(5)):
+        Temp,lws,pm=i[0],i[1],i[2]
+        try:
+            if count==0:
+                count=1
+                continue
+            X.append([float(Temp),float(lws)])
+            PM.append(float(pm))
+        except:
+            pass
+        else:
+            pass
+    return X,PM
+X,Y = get_data(r'C:\Users\sjzx\Desktop\工作簿1.xlsx')
+model = LogisticRegression()
+model.fit(X, Y) # 拟合
+predict = model.predict(X) #预测
+print(u"预测准确度为：%f%%"%(np.mean(np.float64(predict == Y))*100))
