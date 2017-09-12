@@ -1,4 +1,0 @@
-#!/usr/bin/env python
-#coding: utf-8
-import xlrd
-data=xlrd.open_workbook(r'C:\Users\sjzx\Desktop\多维聚类论文\就是这个数据！！！！.xlsx')
