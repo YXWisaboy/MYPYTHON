@@ -1,0 +1,50 @@
+[INFO  - 2017-11-14T02:51:18.100Z] GhostDriver - Main - running on port 50928
+[INFO  - 2017-11-14T02:51:19.234Z] Session [b0ca9830-c8e6-11e7-a801-dd7c0413abe0] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36","webSecurityEnabled":true}
+[INFO  - 2017-11-14T02:51:19.234Z] Session [b0ca9830-c8e6-11e7-a801-dd7c0413abe0] - page.customHeaders:  - {}
+[INFO  - 2017-11-14T02:51:19.235Z] Session [b0ca9830-c8e6-11e7-a801-dd7c0413abe0] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-10-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"},"phantomjs.page.settings.userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"}
+[INFO  - 2017-11-14T02:51:19.235Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: b0ca9830-c8e6-11e7-a801-dd7c0413abe0
+[ERROR - 2017-11-14T02:52:02.412Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - msg: TypeError: null is not an object (evaluating 't.tagName')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.413Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - stack:
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  onload (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.413Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - msg: TypeError: null is not an object (evaluating 't.tagName')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.413Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - stack:
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  onload (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.438Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - msg: TypeError: null is not an object (evaluating 't.tagName')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.438Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - stack:
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  onload (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.443Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - msg: TypeError: null is not an object (evaluating 't.tagName')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.443Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - stack:
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  onload (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.578Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - msg: TypeError: null is not an object (evaluating 't.tagName')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-11-14T02:52:02.578Z] Session [af427190-c8e6-11e7-bee7-616330bfaed5] - page.onError - stack:
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  g (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+  onload (https://weibo.com/yaochen?ssl_rnd=1510627892.517&is_all=1:1)
+
+  phantomjs://platform/console++.js:263 in error
