@@ -42,10 +42,10 @@ def alg_fcm(points,u,m,p,e, terminateturn=1000):
     k = 0;  
     while(True):  
         # calculate one more turn  返回新的矩阵
-        u2 = fcm_oneturn(points, u1, m, p);  
+        u2,cpoint = fcm_oneturn(points, u1, m, p);  
         # max difference between u1 and u2  比较新旧两矩阵不同
         maxu = fcm_maxu(u1,u2);  
-        print(k)  
+        #print(k)  
         if (maxu < e):  
             break;  
         u1 = u2;  
@@ -53,7 +53,7 @@ def alg_fcm(points,u,m,p,e, terminateturn=1000):
         if k > terminateturn:  
             break;  
           
-    return (u2, k); 
+    return u2, k,cpoint 
  
 def fcm_oneturn(points, u, m, p):  
     assert(len(points) == len(u));  
@@ -74,7 +74,7 @@ def fcm_oneturn(points, u, m, p):
     assert(len(u2) == n);  
     assert(len(u2[0]) == c);  
       
-    return u2;  
+    return u2,centroids;  
 
 def fcm_maxu(u1,u2):  
     assert(len(u1) == len(u2));  
@@ -154,6 +154,7 @@ def movepromote(points,a):
         dic.setdefault(points[i],a[i])
     dic = sorted(dic.items(), key=lambda x: float(x[0]), reverse=False)
     
+    #对V_i进行按类别遍历，得到c类别的隶属度序列V_Ic（2≤c≤C），获取V_ic中最大值索引imax,令序列V_ic转化为以V_Ic [imax]为中心的凸队列，即将所有不符合递增递减规律的值置为0
     
     for i in range(c):
         li=[]
@@ -168,6 +169,46 @@ def movepromote(points,a):
                 li[j1+1]=0
         for k in range(len(dic)):
             dic[k][1][i]=li[k]
+   
+    for i in range(len(dic)):
+        dicpoint[dic[i][0]]=dic[i][1]
+    arr=[]
+    for i in range(x):
+          arr.append(dicpoint[points[i]])
+    return dic,arr
+
+def movepromote1(points,c,m,p):
+    position=c.index(max(c))
+    c[position]=max(points)+0.00001
+    position=c.index(min(c))
+    c[position]=min(points)-0.00001
+    a = fcm_u(points, c, m, p) 
+    dic={}
+    dicpoint={}
+    c=len(a[0])
+    x=len(a)
+    for i in range(x):
+        dic.setdefault(points[i],a[i])
+    dic = sorted(dic.items(), key=lambda x: float(x[0]), reverse=False)
+    
+    for i in range(c):
+        li=[]
+        row=[]
+        for k in range(len(dic)):
+            li.append(dic[k][1][i])
+        #print('时代在召唤：',k)
+        _positon = li.index(max(li)) 
+        for j1 in range(_positon,0,-1):
+            if li[j1-1]>li[j1]:
+                li[j1-1]=0
+                row.append(j1-1)
+        for j1 in range(_positon,len(dic)-1):
+            if li[j1+1]>li[j1]:
+                li[j1+1]=0
+                row.append(j1+1)
+        for k in range(len(dic)):
+            dic[k][1][i]=li[k]
+        dic=quxianxiuzheng(dic, i, row)
     
     for i in range(len(dic)):
         dicpoint[dic[i][0]]=dic[i][1]
@@ -176,14 +217,23 @@ def movepromote(points,a):
           arr.append(dicpoint[points[i]])
     return dic,arr
 
+def quxianxiuzheng(dic,cow,row):
+    w=len(dic[0][1])
+    for i in range(w):
+        if i!=cow:
+            for j in row:
+                s=sum(dic[j][1])
+                dic[j][1][i]=(float)(dic[j][1][i])/s
+    return dic
+
 def fcm(points):
     u=makeFU(points,3)
-    print(points,u)
     #参数分别是初始数据集，初始中心点，参数1，参数2，误差，最高迭代次数
-    (result,k)=alg_fcm(points,u,2,2,0.01, 100)
+    result,k,c=alg_fcm(points,u,2,2,0.01, 100)
     result=np.reshape(result, (len(result),3))    
-    result,arr=movepromote(points,result)
-    return arr
+    #result,arr=movepromote(points,result)
+    result,arr=movepromote1(points, c, 2, 2)
+    return arr,c
 
 
 #csv_pd = pd.DataFrame(arr)  

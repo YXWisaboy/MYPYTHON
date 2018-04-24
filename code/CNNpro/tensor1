@@ -1,0 +1,285 @@
+import tensorflow as tf
+'''
+#@@@@1@@@@#
+#创建一个常量op
+m1=tf.constant([[3,3]])
+m2=tf.constant([[2],[3]])
+#创建一个矩阵乘法op，把m1 m2 传入
+product=tf.matmul(m1,m2)
+
+with tf.Session() as sess:
+    result=sess.run(product)
+    print(result)
+'''
+'''
+#@@@@2@@@@#
+x=tf.Variable([1,2])
+a=tf.constant([3,3])
+#增加一个减法op
+sub=tf.subtract(x,a)
+#增加加法op
+add=tf.add(x,sub)
+#变量需要初始化，该函数可对所有变量初始化
+init=tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+    print(sess.run(sub))
+    print(sess.run(add))
+'''
+'''
+#创建变量，初始化为0
+state=tf.Variable(0,name='counter')
+#创建op，执行加1，不能直接赋值
+new_value=tf.add(state,1)
+#赋值op
+update=tf.assign(state,new_value)
+#变量初始化
+init=tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+    print(sess.run(state))
+    for i in range(5):
+        sess.run(update)
+        print(sess.run(state))
+'''
+'''
+#fetch
+input1=tf.constant(3.0)
+input2=tf.constant(2.0)
+input3=tf.constant(5.0)
+add=tf.add(input2,input3)
+mul=tf.multiply(input1,add)
+with tf.Session() as sess:
+#可以同时运行多个op就是fetch
+    result=sess.run([mul,add])
+    print(result)
+
+#Feed
+#创建占位符
+input1=tf.placeholder(tf.float32)
+input2=tf.placeholder(tf.float32)
+output=tf.multiply(input1,input2)
+with tf.Session() as sess:
+    #feed的数值以字典形式传入
+    print(sess.run(output,feed_dict={input1:[7.],input2:[2.]}))
+'''
+'''
+#简单示例(简单线性回归)
+import numpy as np
+#生成100随机点
+x_data=np.random.rand(100)
+y_data=x_data*0.1+0.2
+#构造线性模型
+b=tf.Variable(0.)
+k=tf.Variable(0.)
+y=k*x_data+b
+
+#二次代价函数，reduce—mean求平均值，square求平方
+loss=tf.reduce_mean(tf.square(y_data-y))
+#定义一个梯度下降法进行训练优化器
+optimizer=tf.train.GradientDescentOptimizer(0.2)
+#最小化代价函数
+train=optimizer.minimize(loss)
+
+init=tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+    for i in range(201):
+        sess.run(train)
+        if i%20==0:
+            print(i,sess.run([k,b]))
+'''
+'''
+import numpy as np
+import matplotlib.pyplot as plt
+#生成两百随机点，200行1列的结构
+x_data=np.linspace(-0.5,0.5,200)[:,np.newaxis]
+noise=np.random.normal(0,0.02,x_data.shape)
+y_data=np.square(x_data)+noise
+
+#定义两个placeholder
+x=tf.placeholder(tf.float32,[None,1])
+y=tf.placeholder(tf.float32,[None,1])
+
+#定义圣经网络中间层
+Weights_L1=tf.Variable(tf.random_normal([1,10]))
+biases_L1=tf.Variable(tf.zeros([1,10]))
+Wx_plus_b_L1=tf.matmul(x,Weights_L1)+biases_L1
+L1=tf.nn.tanh(Wx_plus_b_L1)
+
+#定义输出层
+Weights_L2=tf.Variable(tf.random_normal([10,1]))
+biases_L2=tf.Variable(tf.zeros([1,1]))
+Wx_plus_b_L2=tf.matmul(L1,Weights_L2)+biases_L2
+prediction=tf.nn.tanh(Wx_plus_b_L2)
+
+#二次代价函数
+loss=tf.reduce_mean(tf.square(y-prediction))
+#使用梯度下降法
+train_step=tf.train.GradientDescentOptimizer(0.1).minimize(loss)
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for i in range(2000):
+        sess.run(train_step,feed_dict={x:x_data,y:y_data})
+
+    #获得预测值
+    prediction_value=sess.run(prediction,feed_dict={x:x_data})
+    #画图
+    plt.figure()
+    plt.scatter(x_data,y_data)
+    plt.plot(x_data,prediction_value,'r-',lw=5)
+    plt.show()
+'''
+
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+#载入数据集
+mnist=input_data.read_data_sets("mnist",one_hot=True)
+#每个批次的大小
+batch_size=50
+#计算一共有多少个批次
+n_batch=mnist.train.num_examples//batch_size
+#定义两个占位
+x=tf.placeholder(tf.float32,[None,784])
+y=tf.placeholder(tf.float32,[None,10])
+keep_prob=tf.placeholder(tf.float32)
+#创建一个简单的神经网络
+
+W1=tf.Variable(tf.truncated_normal([784,200],stddev=0.1))
+b1=tf.Variable(tf.zeros([200])+0.1)
+L1=tf.nn.tanh(tf.matmul(x,W1)+b1)
+L1_drop=tf.nn.dropout(L1,keep_prob)
+
+W2=tf.Variable(tf.truncated_normal([200,200],stddev=0.1))
+b2=tf.Variable(tf.zeros([200])+0.1)
+L2=tf.nn.tanh(tf.matmul(L1_drop,W2)+b2)
+L2_drop=tf.nn.dropout(L2,keep_prob)
+
+W3=tf.Variable(tf.truncated_normal([200,100],stddev=0.1))
+b3=tf.Variable(tf.zeros([100])+0.1)
+L3=tf.nn.tanh(tf.matmul(L2_drop,W3)+b3)
+L3_drop=tf.nn.dropout(L3,keep_prob)
+
+W4=tf.Variable(tf.truncated_normal([100,10],stddev=0.1))
+b4=tf.Variable(tf.zeros([10])+0.1)
+prediction=tf.nn.softmax(tf.matmul(L3_drop,W4)+b4)
+
+#二次代价函数
+#loss=tf.reduce_mean(tf.square(y-prediction))
+#对数似然代价函数
+loss =tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=prediction))
+train_step=tf.train.GradientDescentOptimizer(0.2).minimize(loss)
+
+init=tf.global_variables_initializer()
+
+#结果存放在一个bool性列表中
+correct_prediction=tf.equal(tf.argmax(y,1),tf.argmax(prediction,1))
+#求准确率,cast表示类型转化，将布尔转化成32位浮点
+accuracy=tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
+with tf.Session() as sess:
+    sess.run(init)
+    for epoch in range(31):
+        for batch in range(n_batch):
+            batch_xs,batch_ys = mnist.train.next_batch(batch_size)
+            sess.run(train_step,feed_dict={x:batch_xs,y:batch_ys,keep_prob:0.7})
+        test_acc=sess.run(accuracy,feed_dict={x:mnist.test.images,y:mnist.test.labels,keep_prob:1.0})
+        train_acc = sess.run(accuracy, feed_dict={x: mnist.train.images, y: mnist.train.labels, keep_prob: 1.0})
+        print("Iter"+str(epoch)+",Testing Accuracy "+str(test_acc)+",training test is "+str(train_acc))
+
+'''
+#优化器
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+from tensorflow.contrib.tensorboard.plugins import projector
+
+#载入数据集
+mnist=input_data.read_data_sets("mnist",one_hot=True)
+#每个批次的大小
+batch_size=100
+#计算一共有多少个批次
+n_batch=mnist.train.num_examples//batch_size
+
+def variable_summaries(var):
+    with tf.name_scope('summaries'):
+        mean=tf.reduce_mean(var)
+        tf.summary.scalar('mean',mean)
+        with tf.name_scope('stddev'):
+            stddev=tf.sqrt(tf.reduce_mean(tf.square(var-mean)))
+        tf.summary.scalar('stddev',stddev)
+        tf.summary.scalar('max',tf.reduce_max(var))
+        tf.summary.scalar('max', tf.reduce_min(var))
+        tf.summary.histogram('histogram',var)
+#命名空间
+with tf.name_scope('input'):
+    #定义两个占位
+    x=tf.placeholder(tf.float32,[None,784],name='x_input')
+    y=tf.placeholder(tf.float32,[None,10],name='y_input')
+    keep_prob=tf.placeholder(tf.float32)
+    lr=tf.Variable(0.001,dtype=tf.float32)
+#创建一个简单的神经网络
+with tf.name_scope('layer'):
+    W1=tf.Variable(tf.truncated_normal([784,200],stddev=0.1))
+    #执行函数，可观察w1与b1变化
+    variable_summaries(W1)
+    b1=tf.Variable(tf.zeros([200])+0.1)
+    variable_summaries(b1)
+    L1=tf.nn.tanh(tf.matmul(x,W1)+b1)
+    L1_drop=tf.nn.dropout(L1,keep_prob)
+
+    W2=tf.Variable(tf.truncated_normal([200,100],stddev=0.1))
+    b2=tf.Variable(tf.zeros([100])+0.1)
+    L2=tf.nn.tanh(tf.matmul(L1_drop,W2)+b2)
+    L2_drop=tf.nn.dropout(L2,keep_prob)
+
+    W3=tf.Variable(tf.truncated_normal([100,10],stddev=0.1))
+    b3=tf.Variable(tf.zeros([10])+0.1)
+    prediction=tf.nn.softmax(tf.matmul(L2_drop,W3)+b3)
+
+#二次代价函数
+#loss=tf.reduce_mean(tf.square(y-prediction))
+#对数似然代价函数
+with tf.name_scope('loss'):
+    loss =tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=prediction))
+    #查看loss变化
+    tf.summary.scalar('loss',loss)
+#train_step=tf.train.GradientDescentOptimizer(0.2).minimize(loss)
+#新的优化器
+with tf.name_scope('train'):
+    train_step=tf.train.AdamOptimizer(lr).minimize(loss)
+init=tf.global_variables_initializer()
+
+#结果存放在一个bool性列表中
+with tf.name_scope('accuracy'):
+    correct_prediction=tf.equal(tf.argmax(y,1),tf.argmax(prediction,1))
+    #求准确率
+    accuracy=tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
+    tf.summary.scalar('accuracy', accuracy)
+#综合所有显示变量
+merged=tf.summary.merge_all()
+with tf.Session() as sess:
+    sess.run(init)
+    writer=tf.summary.FileWriter('logs/',sess.graph)
+    for epoch in range(51):
+        sess.run(tf.assign(lr,0.001*(0.95**epoch)))
+        for batch in range(n_batch):
+            batch_xs,batch_ys = mnist.train.next_batch(batch_size)
+            summary,_=sess.run([merged,train_step],feed_dict={x:batch_xs,y:batch_ys,keep_prob:1.0})
+
+#递归次数
+        writer.add_summary(summary,epoch)
+        test_acc=sess.run(accuracy,feed_dict={x:mnist.test.images,y:mnist.test.labels,keep_prob:1.0})
+        train_acc = sess.run(accuracy, feed_dict={x: mnist.train.images, y: mnist.train.labels, keep_prob: 1.0})
+        print("Iter"+str(epoch)+",Testing Accuracy "+str(test_acc)+",training test is "+str(train_acc))
+'''
+'''
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+from tensorflow.contrib.tensorboard.plugins import projector
+#载入数据集
+mnist=input_data.read_data_sets("mnist",one_hot=True)
+#运行次数
+max_steps=1001
+#图片数量
+image_num=3000
+'''
